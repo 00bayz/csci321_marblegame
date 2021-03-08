@@ -5,10 +5,10 @@
 
 - [ ] Refactor Marble Game from Assignment03
 
-- [ ] Add TableLayoutPanels to organize layout
+- [x] Add TableLayoutPanels to organize layout
 	- [x] One static panel separates the puzzle (reserved portion) from controls
 	- [x] First dynamic panel:
 		- [x] Determine whether all of the height or all of the width of reserved portion will be used
-	- [ ] Second dynamic panel:
-		- [ ] Holds individual picture boxes that make up the puzzle
-	- [ ] When form is resized, the puzzle should change size while maintaining aspect ratio of individual pieces
+	- [x] Second dynamic panel:
+		- [x] Holds individual picture boxes that make up the puzzle
+	- [x] When form is resized, the puzzle should change size while maintaining aspect ratio of individual pieces

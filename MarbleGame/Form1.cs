@@ -14,14 +14,22 @@ namespace MarbleGame
     {
         private string GamePath;
         private Image GameImage;
+        private string[] DataLines;
         private int Dimension;
         private int Balls;
         private int Holes;
         private int Walls;
+        private GridItem[,] GameBoardItems;
+        private TableLayoutPanel GameBoardLayout;
+        private TableLayoutPanel GameBoardGridLayout;
         private float AspectRatio;
         private const int WidthHeightDiff = 317;
         private int PrevWidth;
         private int PrevHeight;
+        private const int EmptyXY = 0;
+        private const int HoleXY = 2;
+        private const int BallXY = 4;
+        private const int ErrXY = 6;
 
         public Game()
         {
@@ -34,7 +42,13 @@ namespace MarbleGame
             LoadGameData();
             EnableControls();
             ClearMainLayout();
+            CalculateAspectRatio();
             CreateGameBoardLayout();
+            CreateGameBoardGrid();
+            CreateGridItemsList();
+            AssignGameItems();
+            RenderGridItems();
+            RenderWalls();
         }
 
         private void OpenOFD()
@@ -57,22 +71,168 @@ namespace MarbleGame
             string ImagePath = $"{GamePath}\\puzzle.jpg";
             string DataPath = $"{GamePath}\\puzzle.txt";
             GameImage = Image.FromFile(ImagePath);
-            string[] Lines = System.IO.File.ReadAllLines(DataPath);
-            string[] Counts = Lines[0].Split(' ');
+            DataLines = System.IO.File.ReadAllLines(DataPath);
+            string[] Counts = DataLines[0].Split(' ');
             Dimension = Convert.ToInt32(Counts[0]);
             Balls = Convert.ToInt32(Counts[1]);
             Holes = Balls;
             Walls = Convert.ToInt32(Counts[2]);
         }
 
+        private void RenderGridItems()
+        {
+            float GridItemWidth = GameBoardLayout.Width / Dimension;
+            float GridItemHeight = GameBoardLayout.Height / Dimension;
+            float ImageItemWidth = GameImage.Width / 7;
+            float ImageItemHeight = GameImage.Height / 7;
+
+            for (int i = 0; i < Dimension; i++)
+            {
+                for (int j = 0; j < Dimension; j++)
+                {
+                    GridItem Item = GameBoardItems[i, j];
+
+                    Bitmap BMap = new Bitmap((int)GridItemWidth, (int)GridItemHeight);
+                    Rectangle Rect = new Rectangle(0, 0, (int)GridItemWidth, (int)GridItemHeight);
+
+                    if (Item.Item == 0)
+                    {
+                        using (Graphics G = Graphics.FromImage(BMap))
+                        {
+                            G.DrawImage(GameImage, Rect, ImageItemWidth * EmptyXY, ImageItemHeight * EmptyXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                        }
+                    }
+                    else if (Item.Item == 1)
+                    {
+                        Font FontArial = new Font("Arial", 24.0f);
+                        Brush BrushYellow = new SolidBrush(Color.Yellow);
+                        StringFormat SF = new StringFormat();
+                        SF.LineAlignment = StringAlignment.Center;
+                        SF.Alignment = StringAlignment.Center;
+                        string Text = Item.BallNum.ToString();
+                        using (Graphics G = Graphics.FromImage(BMap))
+                        {
+                            G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                            G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
+                        }
+                    }
+                    else if (Item.Item == 2)
+                    {
+                        using (Graphics G = Graphics.FromImage(BMap))
+                        {
+                            G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                        }
+                    }
+
+                    Item.Image = BMap;
+                    Item.Dock = System.Windows.Forms.DockStyle.Fill;
+                    GameBoardGridLayout.Controls.Add(Item, j, i);
+                }
+            }
+        }
+
+        private void RenderWalls()
+        {
+            for (int i = 0; i < Dimension; i++)
+            {
+                for (int j = 0; j < Dimension; j++)
+                {
+                    GridItem Item = GameBoardItems[i, j];
+                    PointF TopLeft = new PointF(0, 0);
+                    PointF TopRight = new PointF(Item.Image.Width, 0);
+                    PointF BottomLeft = new PointF(0, Item.Image.Height);
+                    PointF BottomRight = new PointF(Item.Image.Width, Item.Image.Height);
+                    Pen PenRed = new Pen(Color.Red, 10);
+
+                    if (Item.LeftWall == 1)
+                    {
+                        using (Graphics G = Graphics.FromImage(Item.Image))
+                        {
+                            G.DrawLine(PenRed, TopLeft, BottomLeft);
+                        }
+                    }
+
+                    if (Item.RightWall == 1)
+                    {
+                        using (Graphics G = Graphics.FromImage(Item.Image))
+                        {
+                            G.DrawLine(PenRed, TopRight, BottomRight);
+                        }
+                    }
+
+                    if (Item.TopWall == 1)
+                    {
+                        using (Graphics G = Graphics.FromImage(Item.Image))
+                        {
+                            G.DrawLine(PenRed, TopLeft, TopRight);
+                        }
+                    }
+
+                    if (Item.BottomWall == 1)
+                    {
+                        using (Graphics G = Graphics.FromImage(Item.Image))
+                        {
+                            G.DrawLine(PenRed, BottomRight, BottomLeft);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AssignGameItems() // balls, holes, and walls (three loops)
+        {
+            AssignBalls();
+            AssignHoles();
+            AssignWalls();
+        }
+
+        private void CreateGridItemsList()
+        {
+            GameBoardItems = new GridItem[Dimension, Dimension];
+            for (int i = 0; i < Dimension; i++)
+            {
+                for (int j = 0; j < Dimension; j++)
+                {
+                    GameBoardItems[i, j] = new GridItem();
+                    GameBoardItems[i, j].Row = i;
+                    GameBoardItems[i, j].Col = j;
+                    GameBoardItems[i, j].Item = 0;
+                    GameBoardItems[i, j].WallCount = 0;
+                    GameBoardItems[i, j].LeftWall = 0;
+                    GameBoardItems[i, j].TopWall = 0;
+                    GameBoardItems[i, j].RightWall = 0;
+                    GameBoardItems[i, j].BottomWall = 0;
+                    GameBoardItems[i, j].BallNum = 0;
+                    GameBoardItems[i, j].HoleNum = 0;
+                    GameBoardItems[i, j].Name = $"Grid{i}{j}";
+                    GameBoardItems[i, j].SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                    GameBoardItems[i, j].Dock = System.Windows.Forms.DockStyle.Fill;
+                    GameBoardItems[i, j].Margin = new System.Windows.Forms.Padding(0);
+                }
+            }
+        }
+
+        private void CreateGameBoardGrid()
+        {
+            GameBoardGridLayout = new TableLayoutPanel();
+            float ColumnWidthPercent = 100F / Dimension;
+            float RowHeightPercent = 100F / Dimension;
+            GameBoardGridLayout.ColumnCount = Dimension;
+            GameBoardGridLayout.RowCount = Dimension;
+            for (int i = 0; i < Dimension; i++)
+            {
+                GameBoardGridLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, ColumnWidthPercent));
+                GameBoardGridLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, RowHeightPercent));
+            }
+            GameBoardLayout.Controls.Add(GameBoardGridLayout, 0, 0);
+            GameBoardGridLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+        }
+
         private void CreateGameBoardLayout()
         {
-            TableLayoutPanel GameBoardLayout = new TableLayoutPanel();
-            CalculateAspectRatio();
-            if (GameImage.Width > GameImage.Height) // 2 rows
+            GameBoardLayout = new TableLayoutPanel();
+            if (GameImage.Width > GameImage.Height) // 2 rows (Top Row will contain game board)
             {
-                Console.WriteLine("Wide Aspect Ratio - Create 2 Rows");
-                Console.WriteLine(AspectRatio);
                 float GameBoardRowPercent = AspectRatio * 100F;
                 float UnusedRowPercent = 100F - GameBoardRowPercent;
                 GameBoardLayout.ColumnCount = 1;
@@ -83,15 +243,13 @@ namespace MarbleGame
             }
             else // 2 columns (Left Column will contain game board)
             {
-                Console.WriteLine("Tall Aspect Ratio - Create 2 Columns");
-                Console.WriteLine(AspectRatio);
                 float GameBoardColumnPercent = AspectRatio * 100F;
                 float UnusedColumnPercent = 100F - GameBoardColumnPercent;
                 GameBoardLayout.ColumnCount = 2;
                 GameBoardLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, GameBoardColumnPercent));
                 GameBoardLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, UnusedColumnPercent));
                 GameBoardLayout.RowCount = 1;
-                GameBoardLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+                GameBoardLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
                 
             }
             MainLayout.Controls.Add(GameBoardLayout, 0, 0);
@@ -123,6 +281,73 @@ namespace MarbleGame
             UpdateMeasurements();
         }
 
+        private void AssignBalls()
+        {
+            for (int i = 1; i <= Balls; i++)
+            {
+                string[] Coords = DataLines[i].Split(' ');
+                int Row = Convert.ToInt32(Coords[0]);
+                int Col = Convert.ToInt32(Coords[1]);
+                GameBoardItems[Row, Col].BallNum = i;
+                GameBoardItems[Row, Col].Item = 1;
+            }
+        }
+
+        private void AssignHoles()
+        {
+            for (int i = Balls + 1; i <= (Balls * 2); i++)
+            {
+                string[] Coords = DataLines[i].Split(' ');
+                int Row = Convert.ToInt32(Coords[0]);
+                int Col = Convert.ToInt32(Coords[1]);
+                GameBoardItems[Row, Col].HoleNum = i - Balls;
+                GameBoardItems[Row, Col].Item = 2;
+            }
+        }
+
+        private void AssignWalls()
+        {
+            for (int i = (Balls * 2) + 1; i <= (Balls * 2) + Walls; i++)
+            {
+                string[] Coords = DataLines[i].Split(' ');
+                int Row1 = Convert.ToInt32(Coords[0]);
+                int Col1 = Convert.ToInt32(Coords[1]);
+                int Row2 = Convert.ToInt32(Coords[2]);
+                int Col2 = Convert.ToInt32(Coords[3]);
+                GridItem GridItemA = GameBoardItems[Row1, Col1];
+                GridItem GridItemB = GameBoardItems[Row2, Col2];
+                GridItemA.WallCount++;
+                GridItemB.WallCount++;
+                
+                if (Row1 == Row2) // same row
+                {
+                    if (Col1 > Col2)
+                    {
+                        GridItemA.LeftWall = 1;
+                        GridItemB.RightWall = 1;
+                    }
+                    else
+                    {
+                        GridItemA.RightWall = 1;
+                        GridItemB.LeftWall = 1;
+                    }
+                }
+                else // same column
+                {
+                    if (Row1 > Row2)
+                    {
+                        GridItemA.TopWall = 1;
+                        GridItemB.BottomWall = 1;
+                    }
+                    else
+                    {
+                        GridItemA.BottomWall = 1;
+                        GridItemB.TopWall = 1;
+                    }
+                }
+            }
+        }
+
         private void CalculateAspectRatio()
         {
             if (GameImage.Width > GameImage.Height) // Wide Aspect
@@ -133,6 +358,16 @@ namespace MarbleGame
             {
                 AspectRatio = (float)GameImage.Width / (float)GameImage.Height;
             }
+        }
+
+        private float GridItemWidth()
+        {
+            return GameBoardGridLayout.GetColumnWidths()[0] / Dimension;
+        }
+
+        private float GridItemHeight()
+        {
+            return GameBoardGridLayout.GetRowHeights()[0] / Dimension;
         }
 
         private void EnableControls()
