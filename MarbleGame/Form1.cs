@@ -16,5 +16,26 @@ namespace MarbleGame
         {
             InitializeComponent();
         }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            OpenOFD();
+        }
+
+        private void OpenOFD()
+        {
+            using (CustomOFDForm Ofd = new CustomOFDForm())
+            {
+                if (Ofd.ShowDialog() == DialogResult.OK)
+                {
+                    Console.WriteLine("OK");
+                    Console.WriteLine(Ofd.GamePath);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
     }
 }

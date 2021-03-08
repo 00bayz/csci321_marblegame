@@ -31,11 +31,11 @@ namespace MarbleGame
         {
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ControlsBox = new System.Windows.Forms.GroupBox();
+            this.LeftButton = new System.Windows.Forms.Button();
             this.DownButton = new System.Windows.Forms.Button();
             this.RightButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
-            this.LeftButton = new System.Windows.Forms.Button();
             this.MainLayout.SuspendLayout();
             this.ControlsBox.SuspendLayout();
             this.SuspendLayout();
@@ -72,29 +72,17 @@ namespace MarbleGame
             this.ControlsBox.TabStop = false;
             this.ControlsBox.Text = "Controls";
             // 
-            // UpButton
+            // LeftButton
             // 
-            this.UpButton.Enabled = false;
-            this.UpButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.UpButton.Location = new System.Drawing.Point(95, 100);
-            this.UpButton.Name = "UpButton";
-            this.UpButton.Size = new System.Drawing.Size(50, 50);
-            this.UpButton.TabIndex = 1;
-            this.UpButton.Text = "🠕";
-            this.UpButton.UseVisualStyleBackColor = true;
-            // 
-            // RightButton
-            // 
-            this.RightButton.Enabled = false;
-            this.RightButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RightButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.RightButton.Location = new System.Drawing.Point(145, 150);
-            this.RightButton.Name = "RightButton";
-            this.RightButton.Size = new System.Drawing.Size(50, 50);
-            this.RightButton.TabIndex = 2;
-            this.RightButton.Text = "🠖";
-            this.RightButton.UseVisualStyleBackColor = true;
+            this.LeftButton.Enabled = false;
+            this.LeftButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LeftButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LeftButton.Location = new System.Drawing.Point(45, 150);
+            this.LeftButton.Name = "LeftButton";
+            this.LeftButton.Size = new System.Drawing.Size(50, 50);
+            this.LeftButton.TabIndex = 4;
+            this.LeftButton.Text = "🠔";
+            this.LeftButton.UseVisualStyleBackColor = true;
             // 
             // DownButton
             // 
@@ -108,17 +96,29 @@ namespace MarbleGame
             this.DownButton.Text = "🠗";
             this.DownButton.UseVisualStyleBackColor = true;
             // 
-            // LeftButton
+            // RightButton
             // 
-            this.LeftButton.Enabled = false;
-            this.LeftButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LeftButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LeftButton.Location = new System.Drawing.Point(45, 150);
-            this.LeftButton.Name = "LeftButton";
-            this.LeftButton.Size = new System.Drawing.Size(50, 50);
-            this.LeftButton.TabIndex = 4;
-            this.LeftButton.Text = "🠔";
-            this.LeftButton.UseVisualStyleBackColor = true;
+            this.RightButton.Enabled = false;
+            this.RightButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RightButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.RightButton.Location = new System.Drawing.Point(145, 150);
+            this.RightButton.Name = "RightButton";
+            this.RightButton.Size = new System.Drawing.Size(50, 50);
+            this.RightButton.TabIndex = 2;
+            this.RightButton.Text = "🠖";
+            this.RightButton.UseVisualStyleBackColor = true;
+            // 
+            // UpButton
+            // 
+            this.UpButton.Enabled = false;
+            this.UpButton.Font = new System.Drawing.Font("Liberation Mono", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.UpButton.Location = new System.Drawing.Point(95, 100);
+            this.UpButton.Name = "UpButton";
+            this.UpButton.Size = new System.Drawing.Size(50, 50);
+            this.UpButton.TabIndex = 1;
+            this.UpButton.Text = "🠕";
+            this.UpButton.UseVisualStyleBackColor = true;
             // 
             // LoadButton
             // 
@@ -130,7 +130,7 @@ namespace MarbleGame
             this.LoadButton.TabIndex = 0;
             this.LoadButton.Text = "Load Game";
             this.LoadButton.UseVisualStyleBackColor = true;
-            
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // Game
             // 
