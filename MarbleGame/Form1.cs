@@ -12,7 +12,7 @@ namespace MarbleGame
 {
     public partial class Game : Form
     {
-        private string GamePath;
+        private string GamePath = null;
         private Image GameImage;
         private string[] DataLines;
         private int Dimension;
@@ -39,16 +39,19 @@ namespace MarbleGame
         private void LoadButton_Click(object sender, EventArgs e)
         {
             OpenOFD();
-            LoadGameData();
-            EnableControls();
-            ClearMainLayout();
-            CalculateAspectRatio();
-            CreateGameBoardLayout();
-            CreateGameBoardGrid();
-            CreateGridItemsList();
-            AssignGameItems();
-            RenderGridItems();
-            RenderWalls();
+            if (GamePath != null)
+            {
+                LoadGameData();
+                EnableControls();
+                ClearMainLayout();
+                CalculateAspectRatio();
+                CreateGameBoardLayout();
+                CreateGameBoardGrid();
+                CreateGridItemsList();
+                AssignGameItems();
+                RenderGridItems();
+                RenderWalls();
+            }
         }
 
         private void OpenOFD()
