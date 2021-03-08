@@ -118,9 +118,16 @@ namespace MarbleGame
                     }
                     else if (Item.Item == 2)
                     {
+                        Font FontArial = new Font("Arial", 24.0f);
+                        Brush BrushYellow = new SolidBrush(Color.Yellow);
+                        StringFormat SF = new StringFormat();
+                        SF.LineAlignment = StringAlignment.Center;
+                        SF.Alignment = StringAlignment.Center;
+                        string Text = Item.HoleNum.ToString();
                         using (Graphics G = Graphics.FromImage(BMap))
                         {
                             G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                            G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
                         }
                     }
 
@@ -358,16 +365,6 @@ namespace MarbleGame
             {
                 AspectRatio = (float)GameImage.Width / (float)GameImage.Height;
             }
-        }
-
-        private float GridItemWidth()
-        {
-            return GameBoardGridLayout.GetColumnWidths()[0] / Dimension;
-        }
-
-        private float GridItemHeight()
-        {
-            return GameBoardGridLayout.GetRowHeights()[0] / Dimension;
         }
 
         private void EnableControls()
@@ -688,17 +685,39 @@ namespace MarbleGame
                 }
                 else if (Item.Item == 1)
                 {
+                    Font FontArial = new Font("Arial", 24.0f);
+                    Brush BrushYellow = new SolidBrush(Color.Yellow);
+                    StringFormat SF = new StringFormat();
+                    SF.LineAlignment = StringAlignment.Center;
+                    SF.Alignment = StringAlignment.Center;
+                    string Text = Item.BallNum.ToString();
                     using (Graphics G = Graphics.FromImage(BMap))
                     {
                         G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                        G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
                     }
+                    //using (Graphics G = Graphics.FromImage(BMap))
+                    //{
+                    //    G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    //}
                 }
                 else if (Item.Item == 2)
                 {
+                    Font FontArial = new Font("Arial", 24.0f);
+                    Brush BrushYellow = new SolidBrush(Color.Yellow);
+                    StringFormat SF = new StringFormat();
+                    SF.LineAlignment = StringAlignment.Center;
+                    SF.Alignment = StringAlignment.Center;
+                    string Text = Item.HoleNum.ToString();
                     using (Graphics G = Graphics.FromImage(BMap))
                     {
                         G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                        G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
                     }
+                    //using (Graphics G = Graphics.FromImage(BMap))
+                    //{
+                    //    G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    //}
                 }
                 else if (Item.Item == -1)
                 {
@@ -709,6 +728,7 @@ namespace MarbleGame
                 }
                 Item.Image = BMap;
             }
+            RenderWalls();
             ValidateGame(UpdatesList);
         }
 
