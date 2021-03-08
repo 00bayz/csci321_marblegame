@@ -33,7 +33,14 @@ namespace MarbleGame
                 string PathEntered = OFDFilePath.Text;
                 try
                 {
-                    if (System.IO.Directory.Exists(PathEntered))
+                    if (System.IO.Path.GetExtension(PathEntered) == ".mrb")
+                    {
+                        this.DialogResult = DialogResult.OK;
+                        ExtractMrb(PathEntered);
+                        SetGamePath();
+                        this.Close();
+                    }
+                    else if (System.IO.Directory.Exists(PathEntered))
                     {
                         GoTo(PathEntered);
                     }
