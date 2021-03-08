@@ -142,6 +142,7 @@ namespace MarbleGame
             this.Font = new System.Drawing.Font("Liberation Mono", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Game";
             this.Text = "Marble Game";
+            this.ResizeEnd += new System.EventHandler(this.Game_ResizeEnd);
             this.MainLayout.ResumeLayout(false);
             this.ControlsBox.ResumeLayout(false);
             this.ResumeLayout(false);
