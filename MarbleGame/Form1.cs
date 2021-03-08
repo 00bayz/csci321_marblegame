@@ -12,6 +12,7 @@ namespace MarbleGame
 {
     public partial class Game : Form
     {
+        private string GamePath;
         public Game()
         {
             InitializeComponent();
@@ -28,8 +29,7 @@ namespace MarbleGame
             {
                 if (Ofd.ShowDialog() == DialogResult.OK)
                 {
-                    Console.WriteLine("OK");
-                    Console.WriteLine(Ofd.GamePath);
+                    GamePath = Ofd.GamePath;
                 }
                 else
                 {
@@ -37,5 +37,7 @@ namespace MarbleGame
                 }
             }
         }
+
+
     }
 }
