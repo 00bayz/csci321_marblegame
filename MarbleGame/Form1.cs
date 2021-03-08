@@ -391,6 +391,7 @@ namespace MarbleGame
 
         private void UpButton_Click(object sender, EventArgs e)
         {
+            bool HasIncorrectHole = false;
             List<GridItem> Updates = new List<GridItem>();
             for (int row = 0; row < Dimension; row++)
             {
@@ -430,6 +431,7 @@ namespace MarbleGame
                                         nextBox.Item = -1;
                                         nextBox.HoleNum = 0;
                                         Updates.Add(nextBox);
+                                        HasIncorrectHole = true;
                                         break;
                                     }
                                 }
@@ -456,10 +458,19 @@ namespace MarbleGame
                 }
             }
             RenderUpdates(Updates);
+            if (HasIncorrectHole)
+            {
+                GameOver();
+            }
+            else
+            {
+                ValidateWin();
+            }            
         }
 
         private void RightButton_Click(object sender, EventArgs e)
         {
+            bool HasIncorrectHole = false;
             List<GridItem> Updates = new List<GridItem>();
             for (int col = Dimension - 2; col >= 0; col--)
             {
@@ -499,6 +510,7 @@ namespace MarbleGame
                                         nextBox.Item = -1;
                                         nextBox.HoleNum = 0;
                                         Updates.Add(nextBox);
+                                        HasIncorrectHole = true;
                                         break;
                                     }
                                 }
@@ -525,10 +537,19 @@ namespace MarbleGame
                 }
             }
             RenderUpdates(Updates);
+            if (HasIncorrectHole)
+            {
+                GameOver();
+            }
+            else
+            {
+                ValidateWin();
+            }
         }
 
         private void DownButton_Click(object sender, EventArgs e)
         {
+            bool HasIncorrectHole = false;
             List<GridItem> Updates = new List<GridItem>();
             for (int row = Dimension - 2; row >= 0; row--)
             {
@@ -568,6 +589,7 @@ namespace MarbleGame
                                         nextBox.Item = -1;
                                         nextBox.HoleNum = 0;
                                         Updates.Add(nextBox);
+                                        HasIncorrectHole = true;
                                         break;
                                     }
                                 }
@@ -594,10 +616,19 @@ namespace MarbleGame
                 }
             }
             RenderUpdates(Updates);
+            if (HasIncorrectHole)
+            {
+                GameOver();
+            }
+            else
+            {
+                ValidateWin();
+            }
         }
 
         private void LeftButton_Click(object sender, EventArgs e)
         {
+            bool HasIncorrectHole = false;
             List<GridItem> Updates = new List<GridItem>();
             for (int col = 1; col < Dimension; col++)
             {
@@ -637,6 +668,7 @@ namespace MarbleGame
                                         nextBox.Item = -1;
                                         nextBox.HoleNum = 0;
                                         Updates.Add(nextBox);
+                                        HasIncorrectHole = true;
                                         break;
                                     }
                                 }
@@ -663,6 +695,14 @@ namespace MarbleGame
                 }
             }
             RenderUpdates(Updates);
+            if (HasIncorrectHole)
+            {
+                GameOver();
+            }
+            else
+            {
+                ValidateWin();
+            }
         }
 
         private void RenderUpdates(List<GridItem> UpdatesList)
@@ -696,10 +736,6 @@ namespace MarbleGame
                         G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
                         G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
                     }
-                    //using (Graphics G = Graphics.FromImage(BMap))
-                    //{
-                    //    G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
-                    //}
                 }
                 else if (Item.Item == 2)
                 {
@@ -714,10 +750,6 @@ namespace MarbleGame
                         G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
                         G.DrawString(Text, FontArial, BrushYellow, Rect, SF);
                     }
-                    //using (Graphics G = Graphics.FromImage(BMap))
-                    //{
-                    //    G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
-                    //}
                 }
                 else if (Item.Item == -1)
                 {
@@ -729,7 +761,6 @@ namespace MarbleGame
                 Item.Image = BMap;
             }
             RenderWalls();
-            ValidateGame(UpdatesList);
         }
 
         private bool HasHoleNext(GridItem Item)
@@ -737,19 +768,14 @@ namespace MarbleGame
             return Item.HoleNum > 0;
         }
 
-        private void ValidateGame(List<GridItem> List)
+        private void GameOver()
         {
-            // Check loss condition
-            for (int i = 0; i < List.Count; i++)
-            {
-                if (List[i].Item == -1)
-                {
-                    DisableControls();
-                    MessageBox.Show("Game Over");
-                    return;
-                }
-            }
+            DisableControls();
+            MessageBox.Show("Game Over");
+        }
 
+        private void ValidateWin()
+        {      
             // Check win condition
             for (int i = 0; i < Dimension; i++)
             {
@@ -762,6 +788,7 @@ namespace MarbleGame
                 }
             }
 
+            LoadButton.Enabled = true;
             DisableControls();
             MessageBox.Show("You Won!");
         }

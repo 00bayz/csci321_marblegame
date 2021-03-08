@@ -3,7 +3,7 @@
 
 [ Requirements ]
 
-- [ ] Refactor Marble Game from Assignment03
+- [x] Refactor Marble Game from Assignment03
 
 - [x] Add TableLayoutPanels to organize layout
 	- [x] One static panel separates the puzzle (reserved portion) from controls
