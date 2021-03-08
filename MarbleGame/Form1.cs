@@ -378,10 +378,372 @@ namespace MarbleGame
             this.LeftButton.Enabled = true;
         }
 
+        private void DisableControls()
+        {
+            this.UpButton.Enabled = false;
+            this.RightButton.Enabled = false;
+            this.DownButton.Enabled = false;
+            this.LeftButton.Enabled = false;
+        }
+
         private void UpdateMeasurements()
         {
             PrevWidth = this.Width;
             PrevHeight = this.Height;
+        }
+
+        private void UpButton_Click(object sender, EventArgs e)
+        {
+            List<GridItem> Updates = new List<GridItem>();
+            for (int row = 0; row < Dimension; row++)
+            {
+                for (int col = 0; col < Dimension; col++)
+                {
+                    GridItem Item = GameBoardItems[row, col];
+                    if (Item.HasBall())
+                    {
+                        Updates.Add(Item);
+                        int CurrRow = row;
+                        GridItem CurrBox;
+                        while (true)
+                        {
+                            CurrBox = GameBoardItems[CurrRow, col];
+                            if (CurrRow <= 0)
+                            {
+                                break;
+                            }
+                            if (!CurrBox.HasTopWall()) //no wall; move
+                            {
+                                GridItem nextBox = GameBoardItems[CurrRow - 1, col];
+                                if (HasHoleNext(nextBox)) // has hole
+                                {
+                                    if (nextBox.HoleNum == CurrBox.BallNum) // correct hole
+                                    {
+                                        CurrBox.Item = 0;
+                                        CurrBox.BallNum = 0;
+                                        nextBox.Item = 0;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                    else // incorrect hole
+                                    {
+                                        CurrBox.Item = -1;
+                                        CurrBox.BallNum = 0;
+                                        nextBox.Item = -1;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                }
+                                else if (nextBox.Item == 0) //empty
+                                {
+                                    nextBox.Item = 1;
+                                    nextBox.BallNum = CurrBox.BallNum;
+                                    CurrBox.Item = 0;
+                                    CurrBox.BallNum = 0;
+                                    CurrRow--;
+                                }
+                                else if (nextBox.Item == 1) // has ball
+                                {
+                                    break;
+                                }
+                            }
+                            else // wall on bottom
+                            {
+                                break;
+                            }
+                        }
+                        Updates.Add(CurrBox);
+                    }
+                }
+            }
+            RenderUpdates(Updates);
+        }
+
+        private void RightButton_Click(object sender, EventArgs e)
+        {
+            List<GridItem> Updates = new List<GridItem>();
+            for (int col = Dimension - 2; col >= 0; col--)
+            {
+                for (int row = 0; row < Dimension; row++)
+                {
+                    GridItem box = GameBoardItems[row, col];
+                    if (box.HasBall())
+                    {
+                        Updates.Add(box);
+                        int currCol = col;
+                        GridItem currBox;
+                        while (true)
+                        {
+                            currBox = GameBoardItems[row, currCol];
+                            if (currCol >= Dimension - 1)
+                            {
+                                break;
+                            }
+                            if (!currBox.HasRightWall()) //no wall; move
+                            {
+                                GridItem nextBox = GameBoardItems[row, currCol + 1];
+                                if (HasHoleNext(nextBox)) // has hole
+                                {
+                                    if (nextBox.HoleNum == currBox.BallNum) // correct hole
+                                    {
+                                        currBox.Item = 0;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = 0;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                    else // incorrect hole
+                                    {
+                                        currBox.Item = -1;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = -1;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                }
+                                else if (nextBox.Item == 0) //empty
+                                {
+                                    nextBox.Item = 1;
+                                    nextBox.BallNum = currBox.BallNum;
+                                    currBox.Item = 0;
+                                    currBox.BallNum = 0;
+                                    currCol++;
+                                }
+                                else if (nextBox.Item == 1) // has ball
+                                {
+                                    break;
+                                }
+                            }
+                            else // wall on bottom
+                            {
+                                break;
+                            }
+                        }
+                        Updates.Add(currBox);
+                    }
+                }
+            }
+            RenderUpdates(Updates);
+        }
+
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            List<GridItem> Updates = new List<GridItem>();
+            for (int row = Dimension - 2; row >= 0; row--)
+            {
+                for (int col = 0; col < Dimension; col++)
+                {
+                    GridItem box = GameBoardItems[row, col];
+                    if (box.HasBall())
+                    {
+                        Updates.Add(box);
+                        int currRow = row;
+                        GridItem currBox;
+                        while (true)
+                        {
+                            currBox = GameBoardItems[currRow, col];
+                            if (currRow >= Dimension - 1)
+                            {
+                                break;
+                            }
+                            if (!currBox.HasBottomWall()) //no wall; move
+                            {
+                                GridItem nextBox = GameBoardItems[currRow + 1, col];
+                                if (HasHoleNext(nextBox)) // has hole
+                                {
+                                    if (nextBox.HoleNum == currBox.BallNum) // correct hole
+                                    {
+                                        currBox.Item = 0;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = 0;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                    else // incorrect hole
+                                    {
+                                        currBox.Item = -1;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = -1;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                }
+                                else if (nextBox.Item == 0) //empty
+                                {
+                                    nextBox.Item = 1;
+                                    nextBox.BallNum = currBox.BallNum;
+                                    currBox.Item = 0;
+                                    currBox.BallNum = 0;
+                                    currRow++;
+                                }
+                                else if (nextBox.Item == 1) // has ball
+                                {
+                                    break;
+                                }
+                            }
+                            else // wall on bottom
+                            {
+                                break;
+                            }
+                        }
+                        Updates.Add(currBox);
+                    }
+                }
+            }
+            RenderUpdates(Updates);
+        }
+
+        private void LeftButton_Click(object sender, EventArgs e)
+        {
+            List<GridItem> Updates = new List<GridItem>();
+            for (int col = 1; col < Dimension; col++)
+            {
+                for (int row = 0; row < Dimension; row++)
+                {
+                    GridItem box = GameBoardItems[row, col];
+                    if (box.HasBall())
+                    {
+                        Updates.Add(box);
+                        int currCol = col;
+                        GridItem currBox;
+                        while (true)
+                        {
+                            currBox = GameBoardItems[row, currCol];
+                            if (currCol <= 0)
+                            {
+                                break;
+                            }
+                            if (!currBox.HasLeftWall()) //no wall; move
+                            {
+                                GridItem nextBox = GameBoardItems[row, currCol - 1];
+                                if (HasHoleNext(nextBox)) // has hole
+                                {
+                                    if (nextBox.HoleNum == currBox.BallNum) // correct hole
+                                    {
+                                        currBox.Item = 0;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = 0;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                    else // incorrect hole
+                                    {
+                                        currBox.Item = -1;
+                                        currBox.BallNum = 0;
+                                        nextBox.Item = -1;
+                                        nextBox.HoleNum = 0;
+                                        Updates.Add(nextBox);
+                                        break;
+                                    }
+                                }
+                                else if (nextBox.Item == 0) //empty
+                                {
+                                    nextBox.Item = 1;
+                                    nextBox.BallNum = currBox.BallNum;
+                                    currBox.Item = 0;
+                                    currBox.BallNum = 0;
+                                    currCol--;
+                                }
+                                else if (nextBox.Item == 1) // has ball
+                                {
+                                    break;
+                                }
+                            }
+                            else // wall on bottom
+                            {
+                                break;
+                            }
+                        }
+                        Updates.Add(currBox);
+                    }
+                }
+            }
+            RenderUpdates(Updates);
+        }
+
+        private void RenderUpdates(List<GridItem> UpdatesList)
+        {
+            for (int i = 0; i < UpdatesList.Count; i++)
+            {
+                GridItem Item = UpdatesList[i];
+                float ImageItemWidth = GameImage.Width / 7;
+                float ImageItemHeight = GameImage.Height / 7;
+
+                Bitmap BMap = new Bitmap(Item.Width, Item.Height);
+                Rectangle Rect = new Rectangle(0, 0, Item.Width, Item.Height);
+
+                if (Item.Item == 0)
+                {
+                    using (Graphics G = Graphics.FromImage(BMap))
+                    {
+                        G.DrawImage(GameImage, Rect, ImageItemWidth * EmptyXY, ImageItemHeight * EmptyXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    }
+                }
+                else if (Item.Item == 1)
+                {
+                    using (Graphics G = Graphics.FromImage(BMap))
+                    {
+                        G.DrawImage(GameImage, Rect, ImageItemWidth * BallXY, ImageItemHeight * BallXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    }
+                }
+                else if (Item.Item == 2)
+                {
+                    using (Graphics G = Graphics.FromImage(BMap))
+                    {
+                        G.DrawImage(GameImage, Rect, ImageItemWidth * HoleXY, ImageItemHeight * HoleXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    }
+                }
+                else if (Item.Item == -1)
+                {
+                    using (Graphics G = Graphics.FromImage(BMap))
+                    {
+                        G.DrawImage(GameImage, Rect, ImageItemWidth * ErrXY, ImageItemHeight * ErrXY, ImageItemWidth, ImageItemHeight, GraphicsUnit.Pixel);
+                    }
+                }
+                Item.Image = BMap;
+            }
+            ValidateGame(UpdatesList);
+        }
+
+        private bool HasHoleNext(GridItem Item)
+        {
+            return Item.HoleNum > 0;
+        }
+
+        private void ValidateGame(List<GridItem> List)
+        {
+            // Check loss condition
+            for (int i = 0; i < List.Count; i++)
+            {
+                if (List[i].Item == -1)
+                {
+                    DisableControls();
+                    MessageBox.Show("Game Over");
+                    return;
+                }
+            }
+
+            // Check win condition
+            for (int i = 0; i < Dimension; i++)
+            {
+                for (int j = 0; j < Dimension; j++)
+                {
+                    if (GameBoardItems[i, j].Item != 0)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            DisableControls();
+            MessageBox.Show("You Won!");
         }
     }
 }

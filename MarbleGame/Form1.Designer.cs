@@ -83,6 +83,7 @@ namespace MarbleGame
             this.LeftButton.TabIndex = 4;
             this.LeftButton.Text = "🠔";
             this.LeftButton.UseVisualStyleBackColor = true;
+            this.LeftButton.Click += new System.EventHandler(this.LeftButton_Click);
             // 
             // DownButton
             // 
@@ -95,6 +96,7 @@ namespace MarbleGame
             this.DownButton.TabIndex = 3;
             this.DownButton.Text = "🠗";
             this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // RightButton
             // 
@@ -107,6 +109,7 @@ namespace MarbleGame
             this.RightButton.TabIndex = 2;
             this.RightButton.Text = "🠖";
             this.RightButton.UseVisualStyleBackColor = true;
+            this.RightButton.Click += new System.EventHandler(this.RightButton_Click);
             // 
             // UpButton
             // 
@@ -119,6 +122,7 @@ namespace MarbleGame
             this.UpButton.TabIndex = 1;
             this.UpButton.Text = "🠕";
             this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
             // LoadButton
             // 
