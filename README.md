@@ -1,4 +1,4 @@
-# CSCI321 Marble Game
+# [CSCI321 Marble Game](https:://github.com/00bayz/csci321_marblegame)
 
 [ Requirements ]
 
