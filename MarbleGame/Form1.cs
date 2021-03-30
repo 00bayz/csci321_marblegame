@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.IO.Compression;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MarbleGame
 {
@@ -30,10 +34,13 @@ namespace MarbleGame
         private const int HoleXY = 2;
         private const int BallXY = 4;
         private const int ErrXY = 6;
+        private List<LeaderBoardItem> ExistingLeaderList;
+        private string CurrLeaderName = null;
 
         public Game()
         {
             InitializeComponent();
+            ExistingLeaderList = new List<LeaderBoardItem>();
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -794,6 +801,25 @@ namespace MarbleGame
             LoadButton.Enabled = true;
             DisableControls();
             MessageBox.Show("You Won!");
+            OpenLeaderNameForm();
+
+        }
+
+        private void OpenLeaderNameForm()
+        {
+            using (LeaderNameForm NameForm = new LeaderNameForm())
+            {
+                if (NameForm.ShowDialog() == DialogResult.OK)
+                {
+                    CurrLeaderName = NameForm.LeaderName;
+                    Console.WriteLine(CurrLeaderName);
+                }
+                else
+                {
+                    return;
+                }
+            }
         }
     }
+    
 }
