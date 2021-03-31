@@ -36,6 +36,8 @@ namespace MarbleGame
             this.RightButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
+            this.clock1 = new CustomControls.Clock();
+            this.TimerPauseBtn = new System.Windows.Forms.Button();
             this.MainLayout.SuspendLayout();
             this.ControlsBox.SuspendLayout();
             this.SuspendLayout();
@@ -52,11 +54,13 @@ namespace MarbleGame
             this.MainLayout.Name = "MainLayout";
             this.MainLayout.RowCount = 1;
             this.MainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.MainLayout.Size = new System.Drawing.Size(840, 500);
+            this.MainLayout.Size = new System.Drawing.Size(1040, 700);
             this.MainLayout.TabIndex = 0;
             // 
             // ControlsBox
             // 
+            this.ControlsBox.Controls.Add(this.TimerPauseBtn);
+            this.ControlsBox.Controls.Add(this.clock1);
             this.ControlsBox.Controls.Add(this.LeftButton);
             this.ControlsBox.Controls.Add(this.DownButton);
             this.ControlsBox.Controls.Add(this.RightButton);
@@ -65,9 +69,9 @@ namespace MarbleGame
             this.ControlsBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ControlsBox.Font = new System.Drawing.Font("Liberation Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ControlsBox.ForeColor = System.Drawing.Color.Lime;
-            this.ControlsBox.Location = new System.Drawing.Point(603, 3);
+            this.ControlsBox.Location = new System.Drawing.Point(803, 3);
             this.ControlsBox.Name = "ControlsBox";
-            this.ControlsBox.Size = new System.Drawing.Size(234, 494);
+            this.ControlsBox.Size = new System.Drawing.Size(234, 694);
             this.ControlsBox.TabIndex = 0;
             this.ControlsBox.TabStop = false;
             this.ControlsBox.Text = "Controls";
@@ -136,12 +140,34 @@ namespace MarbleGame
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
+            // clock1
+            // 
+            this.clock1.BackColor = System.Drawing.SystemColors.Control;
+            this.clock1.ElapsedMins = 0;
+            this.clock1.ElapsedSecs = 0;
+            this.clock1.Location = new System.Drawing.Point(37, 200);
+            this.clock1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.clock1.Name = "clock1";
+            this.clock1.Size = new System.Drawing.Size(160, 160);
+            this.clock1.TabIndex = 5;
+            // 
+            // TimerPauseBtn
+            // 
+            this.TimerPauseBtn.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TimerPauseBtn.Location = new System.Drawing.Point(37, 368);
+            this.TimerPauseBtn.Name = "TimerPauseBtn";
+            this.TimerPauseBtn.Size = new System.Drawing.Size(160, 23);
+            this.TimerPauseBtn.TabIndex = 6;
+            this.TimerPauseBtn.Text = "Pause";
+            this.TimerPauseBtn.UseVisualStyleBackColor = true;
+            this.TimerPauseBtn.Click += new System.EventHandler(this.TimerPauseBtn_Click);
+            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.ClientSize = new System.Drawing.Size(840, 500);
+            this.ClientSize = new System.Drawing.Size(1040, 700);
             this.Controls.Add(this.MainLayout);
             this.Font = new System.Drawing.Font("Liberation Mono", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Game";
@@ -162,6 +188,8 @@ namespace MarbleGame
         private System.Windows.Forms.Button RightButton;
         private System.Windows.Forms.Button DownButton;
         private System.Windows.Forms.Button LeftButton;
+        private CustomControls.Clock clock1;
+        private System.Windows.Forms.Button TimerPauseBtn;
     }
 }
 

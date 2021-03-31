@@ -36,6 +36,7 @@ namespace MarbleGame
         private const int ErrXY = 6;
         private List<LeaderBoardItem> ExistingLeaderList;
         private string CurrLeaderName = null;
+        private int MovesUsed = 0;
 
         public Game()
         {
@@ -58,6 +59,7 @@ namespace MarbleGame
                 AssignGameItems();
                 RenderGridItems();
                 RenderWalls();
+                clock1.Start();
             }
         }
 
@@ -467,6 +469,7 @@ namespace MarbleGame
                     }
                 }
             }
+            MovesUsed++;
             RenderUpdates(Updates);
             if (HasIncorrectHole)
             {
@@ -546,6 +549,7 @@ namespace MarbleGame
                     }
                 }
             }
+            MovesUsed++;
             RenderUpdates(Updates);
             if (HasIncorrectHole)
             {
@@ -625,6 +629,7 @@ namespace MarbleGame
                     }
                 }
             }
+            MovesUsed++;
             RenderUpdates(Updates);
             if (HasIncorrectHole)
             {
@@ -704,6 +709,7 @@ namespace MarbleGame
                     }
                 }
             }
+            MovesUsed++;
             RenderUpdates(Updates);
             if (HasIncorrectHole)
             {
@@ -798,10 +804,12 @@ namespace MarbleGame
                 }
             }
 
+            clock1.Stop();
             LoadButton.Enabled = true;
             DisableControls();
-            MessageBox.Show("You Won!");
+            MessageBox.Show($"You Won!\nTime: {clock1.ElapsedMins} mins {clock1.ElapsedSecs} secs.\nNumber of moves: {MovesUsed}.");
             OpenLeaderNameForm();
+            clock1.Reset();
 
         }
 
@@ -819,6 +827,24 @@ namespace MarbleGame
                     return;
                 }
             }
+        }
+
+        private void TimerPauseBtn_Click(object sender, EventArgs e)
+        {
+            string action = (sender as Button).Text;
+            if (action == "Pause")
+            {
+                clock1.Pause();
+                GameBoardLayout.Hide();
+                TimerPauseBtn.Text = "Resume";
+            }
+            else if (action == "Resume")
+            {
+                clock1.Resume();
+                GameBoardLayout.Show();
+                TimerPauseBtn.Text = "Pause";
+            }
+            
         }
     }
     

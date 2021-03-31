@@ -2,29 +2,29 @@
 
 [ Requirements ]
 
-- [ ] Create custom analog stopwatch control
-	- [ ] Must be a control that can be put on any form
-		- [ ] Size of the control is determined by where it is used
-	- [ ] Must make use of two separate dials with different center points
-		- [ ] Small dial for minutes
-		- [ ] Large dial for seconds
-	- [ ] Must have the following features:
-		- [ ] Method to **Start** the stopwatch
-		- [ ] Method to **Stop** the stopwatch
-		- [ ] Method to **Pause** the stopwatch
-		- [ ] Method to **Reset** the stopwatch
-		- [ ] Property to get the number of elasped seconds
-		- [ ] Property to get the number of elapsed minutes
-	- [ ] Must start running after use selects their MRB file
-	- [ ] Must stop when the puzzle is solved
+- [x] Create custom analog stopwatch control
+	- [x] Must be a control that can be put on any form
+		- [x] Size of the control is determined by where it is used
+	- [x] Must make use of two separate dials with different center points
+		- [x] Small dial for minutes
+		- [x] Large dial for seconds
+	- [x] Must have the following features:
+		- [x] Method to **Start** the stopwatch
+		- [x] Method to **Stop** the stopwatch
+		- [x] Method to **Pause** the stopwatch
+		- [x] Method to **Reset** the stopwatch
+		- [x] Property to get the number of elasped seconds
+		- [x] Property to get the number of elapsed minutes
+	- [x] Must start running after use selects their MRB file
+	- [x] Must stop when the puzzle is solved
 
-- [ ] Create a **pause** button
-	- [ ] On click to pause:
-		- [ ] Hide the puzzle
-		- [ ] Pause the stopwatch
-	- [ ] On click to resume:
-		- [ ] Show the puzzle
-		- [ ] Resume the stopwatch
+- [x] Create a **pause** button
+	- [x] On click to pause:
+		- [x] Hide the puzzle
+		- [x] Pause the stopwatch
+	- [x] On click to resume:
+		- [x] Show the puzzle
+		- [x] Resume the stopwatch
 
 - [ ] Create a leaderboard
 	- [ ] Must list top five performances, each including the following:
