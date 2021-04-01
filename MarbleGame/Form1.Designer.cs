@@ -31,13 +31,18 @@ namespace MarbleGame
         {
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ControlsBox = new System.Windows.Forms.GroupBox();
+            this.LeaderBoard = new System.Windows.Forms.ListView();
+            this.Rank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PlayerName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.NumberMoves = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TimeSolveFormatted = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TimerPauseBtn = new System.Windows.Forms.Button();
+            this.clock1 = new CustomControls.Clock();
             this.LeftButton = new System.Windows.Forms.Button();
             this.DownButton = new System.Windows.Forms.Button();
             this.RightButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
-            this.clock1 = new CustomControls.Clock();
-            this.TimerPauseBtn = new System.Windows.Forms.Button();
             this.MainLayout.SuspendLayout();
             this.ControlsBox.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +64,7 @@ namespace MarbleGame
             // 
             // ControlsBox
             // 
+            this.ControlsBox.Controls.Add(this.LeaderBoard);
             this.ControlsBox.Controls.Add(this.TimerPauseBtn);
             this.ControlsBox.Controls.Add(this.clock1);
             this.ControlsBox.Controls.Add(this.LeftButton);
@@ -75,6 +81,64 @@ namespace MarbleGame
             this.ControlsBox.TabIndex = 0;
             this.ControlsBox.TabStop = false;
             this.ControlsBox.Text = "Controls";
+            // 
+            // LeaderBoard
+            // 
+            this.LeaderBoard.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Rank,
+            this.PlayerName,
+            this.NumberMoves,
+            this.TimeSolveFormatted});
+            this.LeaderBoard.Font = new System.Drawing.Font("Liberation Mono", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LeaderBoard.HideSelection = false;
+            this.LeaderBoard.Location = new System.Drawing.Point(6, 455);
+            this.LeaderBoard.Name = "LeaderBoard";
+            this.LeaderBoard.Size = new System.Drawing.Size(222, 230);
+            this.LeaderBoard.TabIndex = 7;
+            this.LeaderBoard.UseCompatibleStateImageBehavior = false;
+            this.LeaderBoard.View = System.Windows.Forms.View.Details;
+            // 
+            // Rank
+            // 
+            this.Rank.Text = "#";
+            this.Rank.Width = 20;
+            // 
+            // PlayerName
+            // 
+            this.PlayerName.Text = "Name";
+            this.PlayerName.Width = 66;
+            // 
+            // NumberMoves
+            // 
+            this.NumberMoves.Text = "Moves";
+            this.NumberMoves.Width = 54;
+            // 
+            // TimeSolveFormatted
+            // 
+            this.TimeSolveFormatted.Text = "Time";
+            this.TimeSolveFormatted.Width = 75;
+            // 
+            // TimerPauseBtn
+            // 
+            this.TimerPauseBtn.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TimerPauseBtn.Location = new System.Drawing.Point(37, 368);
+            this.TimerPauseBtn.Name = "TimerPauseBtn";
+            this.TimerPauseBtn.Size = new System.Drawing.Size(160, 23);
+            this.TimerPauseBtn.TabIndex = 6;
+            this.TimerPauseBtn.Text = "Pause";
+            this.TimerPauseBtn.UseVisualStyleBackColor = true;
+            this.TimerPauseBtn.Click += new System.EventHandler(this.TimerPauseBtn_Click);
+            // 
+            // clock1
+            // 
+            this.clock1.BackColor = System.Drawing.SystemColors.Control;
+            this.clock1.ElapsedMins = 0;
+            this.clock1.ElapsedSecs = 0;
+            this.clock1.Location = new System.Drawing.Point(37, 199);
+            this.clock1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.clock1.Name = "clock1";
+            this.clock1.Size = new System.Drawing.Size(160, 161);
+            this.clock1.TabIndex = 5;
             // 
             // LeftButton
             // 
@@ -140,28 +204,6 @@ namespace MarbleGame
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
-            // clock1
-            // 
-            this.clock1.BackColor = System.Drawing.SystemColors.Control;
-            this.clock1.ElapsedMins = 0;
-            this.clock1.ElapsedSecs = 0;
-            this.clock1.Location = new System.Drawing.Point(37, 200);
-            this.clock1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.clock1.Name = "clock1";
-            this.clock1.Size = new System.Drawing.Size(160, 160);
-            this.clock1.TabIndex = 5;
-            // 
-            // TimerPauseBtn
-            // 
-            this.TimerPauseBtn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TimerPauseBtn.Location = new System.Drawing.Point(37, 368);
-            this.TimerPauseBtn.Name = "TimerPauseBtn";
-            this.TimerPauseBtn.Size = new System.Drawing.Size(160, 23);
-            this.TimerPauseBtn.TabIndex = 6;
-            this.TimerPauseBtn.Text = "Pause";
-            this.TimerPauseBtn.UseVisualStyleBackColor = true;
-            this.TimerPauseBtn.Click += new System.EventHandler(this.TimerPauseBtn_Click);
-            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -172,6 +214,7 @@ namespace MarbleGame
             this.Font = new System.Drawing.Font("Liberation Mono", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Game";
             this.Text = "Marble Game";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Game_FormClosing);
             this.ResizeEnd += new System.EventHandler(this.Game_ResizeEnd);
             this.MainLayout.ResumeLayout(false);
             this.ControlsBox.ResumeLayout(false);
@@ -190,6 +233,11 @@ namespace MarbleGame
         private System.Windows.Forms.Button LeftButton;
         private CustomControls.Clock clock1;
         private System.Windows.Forms.Button TimerPauseBtn;
+        private System.Windows.Forms.ListView LeaderBoard;
+        private System.Windows.Forms.ColumnHeader PlayerName;
+        private System.Windows.Forms.ColumnHeader NumberMoves;
+        private System.Windows.Forms.ColumnHeader TimeSolveFormatted;
+        private System.Windows.Forms.ColumnHeader Rank;
     }
 }
 

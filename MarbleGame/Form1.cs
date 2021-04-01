@@ -17,6 +17,8 @@ namespace MarbleGame
     public partial class Game : Form
     {
         private string GamePath = null;
+        private string TempPath = null;
+        private string ArchivePath = null;
         private Image GameImage;
         private string[] DataLines;
         private int Dimension;
@@ -42,6 +44,63 @@ namespace MarbleGame
         {
             InitializeComponent();
             ExistingLeaderList = new List<LeaderBoardItem>();
+            ExistingLeaderList.Capacity = 5;
+        }
+
+        private void RenderLeaderBoard()
+        {
+            LeaderBoard.Items.Clear();
+            for (int i = 0; i < 5; i++)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = (i + 1).ToString();
+                item.SubItems.Add(ExistingLeaderList[i].PlayerName);
+                item.SubItems.Add(ExistingLeaderList[i].NumberMoves.ToString());
+                item.SubItems.Add(ExistingLeaderList[i].TimeSolveFormatted);
+                LeaderBoard.Items.Add(item);
+            }
+            OrderLeaderList();
+        }
+
+        private void LoadLeaderBoard()
+        {
+            if (TempPath != null)
+            {
+                RemoveTempFolder();
+            }
+            TempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(TempPath);
+            using (ZipArchive mrb = ZipFile.OpenRead(ArchivePath))
+            {
+                foreach (ZipArchiveEntry entry in mrb.Entries)
+                {
+                    entry.ExtractToFile(Path.Combine(TempPath, entry.FullName), true);
+                }
+            }
+            string LeaderBoardFile = Path.Combine(TempPath, "puzzle.bin");
+            FileInfo LeaderBoardFileInfo = new FileInfo(LeaderBoardFile);
+            if (LeaderBoardFileInfo.Exists == true)
+            {
+                using (FileStream stream = new FileStream(LeaderBoardFile, FileMode.Open, FileAccess.Read))
+                {
+                    IFormatter formatter = new BinaryFormatter();
+                    if (stream.Length > 0)
+                    {
+                        ExistingLeaderList = (List<LeaderBoardItem>) formatter.Deserialize(stream);                        
+                    }
+                }
+            }
+        }
+
+        private void RemoveTempFolder()
+        {
+            System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(TempPath);
+            System.IO.FileInfo[] fileList = dirInfo.GetFiles();
+            foreach (System.IO.FileInfo file in fileList)
+            {
+                System.IO.File.Delete(file.FullName);
+            }
+            System.IO.Directory.Delete(TempPath);
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -60,6 +119,8 @@ namespace MarbleGame
                 RenderGridItems();
                 RenderWalls();
                 clock1.Start();
+                LoadLeaderBoard();
+                RenderLeaderBoard();
             }
         }
 
@@ -70,6 +131,7 @@ namespace MarbleGame
                 if (Ofd.ShowDialog() == DialogResult.OK)
                 {
                     GamePath = Ofd.GamePath;
+                    ArchivePath = Ofd.ArchivePath;
                 }
                 else
                 {
@@ -810,7 +872,16 @@ namespace MarbleGame
             MessageBox.Show($"You Won!\nTime: {clock1.ElapsedMins} mins {clock1.ElapsedSecs} secs.\nNumber of moves: {MovesUsed}.");
             OpenLeaderNameForm();
             clock1.Reset();
+            MovesUsed = 0;
+        }
 
+        private void CreateRecord(LeaderBoardItem NewLeaderItem)
+        {
+            NewLeaderItem.PlayerName = CurrLeaderName;
+            NewLeaderItem.NumberMoves = MovesUsed;
+            NewLeaderItem.TimeSolveFormatted = $"{clock1.ElapsedMins} m {clock1.ElapsedSecs} s";
+            NewLeaderItem.TotalSeconds = clock1.ElapsedSecs + (clock1.ElapsedMins * 60);
+            ExistingLeaderList.Add(NewLeaderItem);
         }
 
         private void OpenLeaderNameForm()
@@ -820,11 +891,61 @@ namespace MarbleGame
                 if (NameForm.ShowDialog() == DialogResult.OK)
                 {
                     CurrLeaderName = NameForm.LeaderName;
-                    Console.WriteLine(CurrLeaderName);
+                    LeaderBoardItem NewLeaderItem = new LeaderBoardItem();
+                    CreateRecord(NewLeaderItem);
+                    OrderLeaderList();
+                    TrimList();
+                    BinaryToFile();
+                    RenderLeaderBoard();
                 }
                 else
                 {
                     return;
+                }
+            }
+        }
+
+        private void OrderLeaderList()
+        {
+            ExistingLeaderList = ExistingLeaderList.OrderBy(item => item.NumberMoves).ThenBy(item => item.TotalSeconds).ToList();
+        }
+
+        private void TrimList()
+        {
+            ExistingLeaderList.TrimExcess();
+        }
+
+        private void Game_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            BinaryToFile();
+        }
+
+        private void BinaryToFile()
+        {
+            // write binary to file
+            IFormatter formatter = new BinaryFormatter();
+            if (TempPath != null)
+            {
+                string LeaderBoardFile = Path.Combine(TempPath, "puzzle.bin");
+                using (FileStream stream = new FileStream(LeaderBoardFile, FileMode.Create))
+                {
+                    formatter.Serialize(stream, ExistingLeaderList);
+                }
+                using (ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Update))
+                {
+                    ZipArchiveEntry entry = archive.GetEntry("puzzle.bin");
+                    if (entry != null)
+                    {
+                        entry.Delete();
+                    }
+                    OrderLeaderList();
+                    TrimList();
+                    RenderLeaderBoard();
+                    ZipArchiveEntry LeaderList = archive.CreateEntry("puzzle.bin");
+                    using (Stream stream = LeaderList.Open())
+                    {
+                        formatter.Serialize(stream, ExistingLeaderList);
+                    }
                 }
             }
         }

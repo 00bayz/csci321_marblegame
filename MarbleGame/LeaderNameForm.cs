@@ -30,8 +30,11 @@ namespace MarbleGame
 
         private void LeaderNameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            LeaderName = "Anonymous";
-            this.DialogResult = DialogResult.OK;
+            if (DialogResult.ToString() == "Cancel")
+            {
+                LeaderName = "Anonymous";
+                this.DialogResult = DialogResult.OK;
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ namespace MarbleGame
         private string CurrentPath = null;
         private string TempPath = null;
         public string GamePath = null;
+        public string ArchivePath = null;
 
         public CustomOFDForm()
         {
@@ -36,6 +37,7 @@ namespace MarbleGame
                     if (System.IO.Path.GetExtension(PathEntered) == ".mrb")
                     {
                         this.DialogResult = DialogResult.OK;
+                        ArchivePath = PathEntered;
                         ExtractMrb(PathEntered);
                         SetGamePath();
                         this.Close();
@@ -98,6 +100,7 @@ namespace MarbleGame
             if (SelectedType == ".mrb")
             {
                 this.DialogResult = DialogResult.OK;
+                ArchivePath = FullPath;
                 ExtractMrb(FullPath);
                 SetGamePath();
                 this.Close();
@@ -131,6 +134,7 @@ namespace MarbleGame
                 if (SelectedType == ".mrb")
                 {
                     this.DialogResult = DialogResult.OK;
+                    ArchivePath = FullPath;
                     ExtractMrb(FullPath);
                     SetGamePath();
                     this.Close();
@@ -254,10 +258,12 @@ namespace MarbleGame
             }
             TempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), System.IO.Path.GetRandomFileName());
             System.IO.Directory.CreateDirectory(TempPath);
-            System.IO.Compression.ZipArchive mrb = System.IO.Compression.ZipFile.OpenRead(Path);
-            foreach (System.IO.Compression.ZipArchiveEntry entry in mrb.Entries)
+            using (System.IO.Compression.ZipArchive mrb = System.IO.Compression.ZipFile.OpenRead(Path))
             {
-                entry.ExtractToFile(System.IO.Path.Combine(TempPath, entry.FullName), true);
+                foreach (System.IO.Compression.ZipArchiveEntry entry in mrb.Entries)
+                {
+                    entry.ExtractToFile(System.IO.Path.Combine(TempPath, entry.FullName), true);
+                }
             }
         }
 

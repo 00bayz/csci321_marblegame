@@ -26,11 +26,12 @@
 		- [x] Show the puzzle
 		- [x] Resume the stopwatch
 
-- [ ] Create a leaderboard
-	- [ ] Must list top five performances, each including the following:
-		- [ ] Name
-		- [ ] Number of moves
-		- [ ] Time to solve puzzle
-	- [ ] Leaderboard file should be named "puzzle.bin" and use the Serialized format discussed in class
-	- [ ] Listings should be ordered first by the **number of moves** and then by the **time** it took to solve
+- [x] Create a leaderboard
+	- [x] Must list top five performances, each including the following:
+		- [x] Name
+		- [x] Number of moves
+		- [x] Time to solve puzzle
+	- [x] Leaderboard file should be named "puzzle.bin" and use the Serialized format discussed in class
+	- [x] Leaderboard file should be saved in corresponding MRB file
+	- [x] Listings should be ordered first by the **number of moves** and then by the **time** it took to solve
 
