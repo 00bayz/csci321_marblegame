@@ -108,6 +108,10 @@
       <Project>{BBB26C2B-A6DA-40FE-B099-3E376834F08C}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CustomDLL\CustomDLL.csproj">
+      <Project>{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}</Project>
+      <Name>CustomDLL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

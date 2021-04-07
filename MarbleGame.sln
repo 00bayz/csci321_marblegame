@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarbleGame", "MarbleGame\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomControls\CustomControls.csproj", "{BBB26C2B-A6DA-40FE-B099-3E376834F08C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDLL", "CustomDLL\CustomDLL.csproj", "{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BBB26C2B-A6DA-40FE-B099-3E376834F08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB26C2B-A6DA-40FE-B099-3E376834F08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB26C2B-A6DA-40FE-B099-3E376834F08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD68BBC5-A0B2-45AB-A4FD-D895C9D64FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
