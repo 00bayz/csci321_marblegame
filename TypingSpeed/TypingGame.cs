@@ -58,6 +58,7 @@ namespace TypingSpeed
                 startBtn.Text = generateRandomString();
                 startBtn.Enabled = false;
                 resTextBox.Focus();
+                resTextBox.CharacterCasing = CharacterCasing.Upper;
             }
         }
 
