@@ -31,6 +31,7 @@ namespace MarbleGame
         {
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ControlsBox = new System.Windows.Forms.GroupBox();
+            this.clock1 = new CustomDLL.Clock();
             this.LeaderBoard = new System.Windows.Forms.ListView();
             this.Rank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PlayerName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -42,7 +43,6 @@ namespace MarbleGame
             this.RightButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
-            this.clock1 = new CustomDLL.Clock();
             this.MainLayout.SuspendLayout();
             this.ControlsBox.SuspendLayout();
             this.SuspendLayout();
@@ -82,6 +82,17 @@ namespace MarbleGame
             this.ControlsBox.TabStop = false;
             this.ControlsBox.Text = "Controls";
             // 
+            // clock1
+            // 
+            this.clock1.BackColor = System.Drawing.SystemColors.Control;
+            this.clock1.ElapsedMins = 0;
+            this.clock1.ElapsedSecs = 0;
+            this.clock1.Location = new System.Drawing.Point(37, 201);
+            this.clock1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.clock1.Name = "clock1";
+            this.clock1.Size = new System.Drawing.Size(160, 160);
+            this.clock1.TabIndex = 8;
+            // 
             // LeaderBoard
             // 
             this.LeaderBoard.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -120,6 +131,7 @@ namespace MarbleGame
             // 
             // TimerPauseBtn
             // 
+            this.TimerPauseBtn.Enabled = false;
             this.TimerPauseBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.TimerPauseBtn.Location = new System.Drawing.Point(37, 368);
             this.TimerPauseBtn.Name = "TimerPauseBtn";
@@ -192,17 +204,6 @@ namespace MarbleGame
             this.LoadButton.Text = "Load Game";
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
-            // clock1
-            // 
-            this.clock1.BackColor = System.Drawing.SystemColors.Control;
-            this.clock1.ElapsedMins = 0;
-            this.clock1.ElapsedSecs = 0;
-            this.clock1.Location = new System.Drawing.Point(37, 201);
-            this.clock1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.clock1.Name = "clock1";
-            this.clock1.Size = new System.Drawing.Size(160, 160);
-            this.clock1.TabIndex = 8;
             // 
             // Game
             // 

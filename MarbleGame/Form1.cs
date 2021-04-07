@@ -119,6 +119,7 @@ namespace MarbleGame
                 RenderGridItems();
                 RenderWalls();
                 clock1.Start();
+                TimerPauseBtn.Enabled = true;
                 LoadLeaderBoard();
                 RenderLeaderBoard();
             }
@@ -849,6 +850,8 @@ namespace MarbleGame
         private void GameOver()
         {
             DisableControls();
+            clock1.Reset();
+            TimerPauseBtn.Enabled = false;
             MessageBox.Show("Game Over");
         }
 
@@ -872,6 +875,7 @@ namespace MarbleGame
             MessageBox.Show($"You Won!\nTime: {clock1.ElapsedMins} mins {clock1.ElapsedSecs} secs.\nNumber of moves: {MovesUsed}.");
             OpenLeaderNameForm();
             clock1.Reset();
+            TimerPauseBtn.Enabled = false;
             MovesUsed = 0;
         }
 
